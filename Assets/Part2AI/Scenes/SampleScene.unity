@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 9963583}
   - component: {fileID: 9963582}
   - component: {fileID: 9963587}
+  - component: {fileID: 9963588}
   m_Layer: 0
   m_Name: BadGuy
   m_TagString: Untagged
@@ -272,9 +273,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIManager
   agent: {fileID: 9963582}
+  visionScript: {fileID: 9963588}
   isDead: 0
   reachedDestination: 0
   isBored: 0
+  canSeePlayer: 0
+--- !u!114 &9963588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9963579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07107ebea501ff49b28cdf2b08118c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyVisionScript
+  visionRange: 3
+  coneAperture: 0
+  eyeObject: {fileID: 982995417}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
