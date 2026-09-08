@@ -1,0 +1,57 @@
+{
+    "version": 1,
+    "name": "P2AIIA",
+    "maps": [
+        {
+            "name": "MovePlayer",
+            "id": "e28e4daf-ec7e-497b-90e9-24b90cb4c5c7",
+            "actions": [
+                {
+                    "name": "MoveHere",
+                    "type": "Button",
+                    "id": "6b36ec30-004c-4a36-be0b-9faa1301459c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "8135dfdc-69ff-43c6-a41e-e0ebf3168854",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7ef2a897-29af-4372-abb3-27cb9c1dd0e3",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveHere",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1e141ba-430a-4bf9-a4c8-acb72ea8d361",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
