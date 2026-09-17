@@ -18,6 +18,8 @@ public class EnemyAIManager : MonoBehaviour
     public EnemyAIFrolicState frolicState = new();
     //The dead state for this enemy
     public EnemyAIDeadState deadState = new();
+    //The escape state for this enemy
+    public EnemyAIEscapeState escapeState = new();
 
     //Blackboard
     public bool isDead = false;
@@ -76,8 +78,11 @@ public class EnemyAIManager : MonoBehaviour
         canSeePlayer = to;
 
         if (canSeePlayer)
-            GetComponent<MeshRenderer>().material.color = Color.red;
+        {
+            GetComponent<MeshRenderer>().material.color = Color.orange;
+            SetCurrentState(escapeState);
+        }
         else
-            GetComponent<MeshRenderer>().material.color = Color.blue;
+            GetComponent<MeshRenderer>().material.color = Color.red;
     }
 }
