@@ -15,6 +15,13 @@ MonoBehaviour:
   dungeonName: Defaultland
   possibleRooms:
   - room: {fileID: 11400000, guid: 90546de755f984247b141ef16455172e, type: 2}
-    copies: 5
+    copies: 10
   - room: {fileID: 11400000, guid: 423a1ab02812da24fa3b67b5a37937ab, type: 2}
     copies: 1
+  - room: {fileID: 11400000, guid: 324c20c4aae1f7a42be537cecacf4ca8, type: 2}
+    copies: 2
+  - room: {fileID: 11400000, guid: 263a73728ecabdd4daa99eb416006b19, type: 2}
+    copies: 1
+  minRoomCount: 6
+  maxRoomCount: 10
+  cap: {fileID: 6211324965041785239, guid: 3c877729ac3b620478a2eea4fe13734c, type: 3}

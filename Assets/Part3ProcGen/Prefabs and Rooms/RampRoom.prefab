@@ -51,14 +51,14 @@ MonoBehaviour:
   - {fileID: 6445059960740523459}
   - {fileID: 6822782307157190500}
   colorKeywords:
-  - keyword: RED
-    color: {r: 1, g: 0, b: 0, a: 1}
-  - keyword: GREEN
-    color: {r: 0.0191046, g: 1, b: 0, a: 1}
   - keyword: BLUE
     color: {r: 0, g: 0, b: 1, a: 1}
+  - keyword: RED
+    color: {r: 1, g: 0, b: 0, a: 1}
   - keyword: YELLOW
     color: {r: 1, g: 1, b: 0, a: 1}
+  - keyword: GREEN
+    color: {r: 0.0191046, g: 1, b: 0, a: 1}
 --- !u!1001 &4339225676741353905
 PrefabInstance:
   m_ObjectHideFlags: 0

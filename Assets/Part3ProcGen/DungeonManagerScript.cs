@@ -73,62 +73,100 @@ public class DungeonManagerScript : MonoBehaviour
                 Draw(out newRoom);
             }
 
-            SpawnRoom(newRoom, currentRoom);
+            //Debug.Log(currentRoom.GetEntityId());
+            SpawnRoom(newRoom, ref currentRoom);
+            //Debug.Log(currentRoom.GetEntityId());
             
         }
+
+        //We close the exits with a cap
+        CloseOffExits();
     }
-    void SpawnRoom(DungeonRoomSO newRoom, RoomScript currentRoom)
+    void SpawnRoom(DungeonRoomSO newRoom, ref RoomScript currentRoom)
     {
         RoomExits currentRoomExit;
 
         int exitInd = 0;
-        foreach (var exit in newRoom.roomDoors)
+
+        //Spawn the next room
+        // more details to come
+        currentRoom = Instantiate(newRoom.prefab,
+            Vector3.zero, Quaternion.identity);
+
+        //We make a list to be able to shuffle the exits in the coming room
+        List<RoomExits> newRoomExits = new();
+
+        //Then we fill it with the exits in the room we spawned
+        for (int n= 0; n < currentRoom.doors.Length; n++)
         {
-            foreach (var possibleConnections in exit.canConnectToKeywords)
+            newRoomExits.Add(new RoomExits(currentRoom.doors[n], 
+                currentRoom.colorKeywords[n].keyword));
+        }
+
+        //We shuffle the list
+        RoomExits temp;
+        for (int i = 0; i < newRoomExits.Count; i++)
+        {
+            int rand = Random.Range(0, newRoomExits.Count);
+            temp = newRoomExits[rand];
+            newRoomExits[rand] = newRoomExits[i];
+            newRoomExits[i] = temp;
+        }
+
+        //For each exit...
+        foreach (var exit in newRoomExits)
+        {
+            //If we can find an available exit with the same keyword
+            if ((currentRoomExit = availableExits.Find
+                (x => x.keyword == exit.keyword)) != null)
             {
-                if ((currentRoomExit = availableExits.Find
-                    (x => x.keyword == possibleConnections)) != null)
+                Debug.Log(string.Format("Attempting to connect {0} to {1}.",
+                    exit.keyword, currentRoomExit.keyword));
+
+
+                //Get a reference to the selected exit
+                Transform selectedExit = newRoomExits[exitInd].edge;
+                Debug.Log(currentRoom.doors[exitInd].name + " " + exitInd);
+                //Parent room to exit
+                selectedExit.SetParent(null);
+                currentRoom.transform.SetParent(selectedExit);
+                //Align door with available exit and make them point to each other
+                selectedExit.position = currentRoomExit.edge.position;
+                selectedExit.forward = -currentRoomExit.edge.forward;
+
+                //Remove the exit we used
+                newRoomExits.RemoveAt(exitInd);
+
+                //Add the new exits to the available exits
+                foreach (var e in newRoomExits)
                 {
-                    //Spawn the next room
-                    // more details to come
-                    currentRoom = Instantiate(newRoom.prefab,
-                        Vector3.zero, Quaternion.identity);
+                    availableExits.Add(e);
+                }
+                Debug.Log(availableExits.Count);
 
-                    //Get a reference to the selected exit
-                    Transform selectedExit = currentRoom.doors[exitInd].transform;
-                    //Parent room to exit
-                    selectedExit.SetParent(null);
-                    currentRoom.transform.SetParent(selectedExit);
-                    //Align door with available exit and make them point to each other
-                    selectedExit.position = currentRoomExit.edge.position;
-                    selectedExit.forward = -currentRoomExit.edge.forward;
-
-                    //For each exit in the room we just spawned
-                    for (int n = 0; n < currentRoom.doors.Length; n++)
-                    {
-                        //Add it to the list of available exits
-                        availableExits.Add(new RoomExits(
-                            currentRoom.doors[n], currentRoom.colorKeywords[n].keyword));
-                    }
-
-                    //Shuffle the list of available exits
-                    for (int j = 0; j < availableExits.Count; j++)
-                    {
-                        int rand = Random.Range(0, availableExits.Count);
-                        RoomExits temp = availableExits[j];
-                        availableExits[j] = availableExits[rand];
-                        availableExits[rand] = temp;
-                    }
+                //Shuffle the list of available exits
+                for (int j = 0; j < availableExits.Count; j++)
+                {
+                    int rand = Random.Range(0, availableExits.Count);
+                    temp = availableExits[j];
+                    availableExits[j] = availableExits[rand];
+                    availableExits[rand] = temp;
                 }
 
+                //Remove the exit we just connected to
                 availableExits.Remove(currentRoomExit);
 
                 return;
             }
             exitInd++;
         }
+
+        Debug.Log("Couldn't find an available exit for the spawned room.");
+        //Destroy room created
+        Destroy(currentRoom.gameObject);
     }
 
+    //
     public void ShuffleDeck()
     {
         DungeonRoomSO temp;
@@ -144,6 +182,7 @@ public class DungeonManagerScript : MonoBehaviour
         }
     }
 
+    //
     public void RestockDeck()
     {
         //Clear the deck
@@ -159,6 +198,22 @@ public class DungeonManagerScript : MonoBehaviour
                 deck.Add(item.room);
             }
         }
+    }
+
+    //
+    private void CloseOffExits()
+    {
+        //For each exit
+        foreach (var exit in availableExits)
+        {
+            //Instantiate a cap
+            Transform cap = Instantiate(settings.cap);
+            //Position it and rotate it so it closes off the exit
+            cap.position = exit.edge.position;
+            cap.forward = -exit.edge.forward;
+        }
+        //Clear the list
+        availableExits.Clear();
     }
 
     /// <summary>
