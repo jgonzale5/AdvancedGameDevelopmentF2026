@@ -28,6 +28,9 @@ public class DungeonManagerScript : MonoBehaviour
     //This is a dynamic list to keep track of which exits are open in the dungeon
     private List<RoomExits> availableExits = new();
 
+    //The layers that can be overlapped during dungeon generation
+    public LayerMask overlapLayerMask;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,6 +42,7 @@ public class DungeonManagerScript : MonoBehaviour
         int roomCount = Random.Range(settings.minRoomCount,
             settings.maxRoomCount);
         DungeonRoomSO newRoom;
+        RoomScript currentRoom;
 
         //Stock the deck with the cards we can have
         RestockDeck();
@@ -50,7 +54,7 @@ public class DungeonManagerScript : MonoBehaviour
         //Spawn the room at 0,0,0 with no rotation
         //Store a reference in "currentRoom"
         //We'll use it to keep track of new rooms
-        RoomScript currentRoom = Instantiate(newRoom.prefab, 
+        currentRoom = Instantiate(newRoom.prefab, 
             Vector3.zero, Quaternion.identity);
 
         //For each exit in the room we just spawned
@@ -76,7 +80,6 @@ public class DungeonManagerScript : MonoBehaviour
             //Debug.Log(currentRoom.GetEntityId());
             SpawnRoom(newRoom, ref currentRoom);
             //Debug.Log(currentRoom.GetEntityId());
-            
         }
 
         //We close the exits with a cap
@@ -133,6 +136,14 @@ public class DungeonManagerScript : MonoBehaviour
                 //Align door with available exit and make them point to each other
                 selectedExit.position = currentRoomExit.edge.position;
                 selectedExit.forward = -currentRoomExit.edge.forward;
+
+                //If the room is colliding with another room already on the map, we try to find another exit
+                if (CheckCollisions(currentRoomExit.edge.GetComponentInParent<RoomScript>(), currentRoom))
+                {
+                    Debug.Log("Space was blocked!");
+                    //Try another iteration of the loop
+                    continue;
+                }
 
                 //Remove the exit we used
                 newRoomExits.RemoveAt(exitInd);
@@ -239,5 +250,45 @@ public class DungeonManagerScript : MonoBehaviour
 
         //Return false if the deck is empty
         return false;
+    }
+
+
+    /// <summary>
+    /// A function that checks if a newly spawned piece is colliding with something else.
+    /// </summary>
+    /// <param name="connectingTo">The room that it's connecting to. We ignore it.</param>
+    /// <param name="newPiece">The room that just spawned.</param>
+    /// <returns></returns>
+    private bool CheckCollisions(RoomScript connectingTo, RoomScript newPiece)
+    {
+        //Disable collider
+        newPiece.colliderCheck.enabled = false;
+        connectingTo.colliderCheck.enabled = false;
+
+        //The list of colliders overlapping with the newly placed piece.
+        //We pass to the function the center, and its size divided by 2 because it's asking for the extents.
+        Collider[] collisions = Physics.OverlapBox(
+            newPiece.colliderCheck.bounds.center, //The center
+            newPiece.colliderCheck.bounds.size / 2,  //The size of the overlap check
+            newPiece.transform.rotation, //The rotation of the overlap check
+            overlapLayerMask //The layers we're ignoring in this step
+            );
+
+        //Enable collider
+        newPiece.colliderCheck.enabled = true;
+        connectingTo.colliderCheck.enabled = true;
+
+        //If there's any collisions, return true
+        return collisions.Length > 0;
+
+
+
+        //if (collisions.Length == 0 //If there's no elements, we're good. If there are...
+        //    || (collisions.Length == 1 && //If it's only one element
+        //    collisions[0].transform == connectingTo.colliderCheck.transform)) //And that element is the door we're trying to connect 
+        //    return false; //Then we're safe, we're not hitting anything.
+
+        ////If there's more than one element, then there has to be another room blocking the way
+        //return true;
     }
 }

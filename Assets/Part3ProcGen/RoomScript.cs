@@ -15,4 +15,7 @@ public class RoomScript : MonoBehaviour
     //The color used for each keyword
     [SerializeField]
     public ColorKeyword[] colorKeywords;
+    //A reference to the collider that we're using for checking obstructions during dungeon generation
+    [SerializeField]
+    public Collider colliderCheck;
 }

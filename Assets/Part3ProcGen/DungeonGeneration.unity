@@ -286,6 +286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonManagerScript
   settings: {fileID: 11400000, guid: 36dbb9c53e7b10a4e93aa9df4f5184f0, type: 2}
+  overlapLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1190088128
 Transform:
   m_ObjectHideFlags: 0
