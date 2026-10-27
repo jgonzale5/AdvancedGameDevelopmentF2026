@@ -41,6 +41,14 @@ public class DialogueManager : MonoBehaviour
             //Continue the story and cache what it says
             string line = activeScene.Continue();
 
+            //If there are any tags in the current line
+            if (activeScene.currentTags.Count > 0)
+            {
+                //Get the line from the language loader
+                line = DialogueLanguageLoaderScript.Instance.
+                    GetLine(activeScene.currentTags[0]);
+            }
+
             //If there are choices present now
             if (activeScene.currentChoices.Count > 0)
             {
@@ -50,7 +58,18 @@ public class DialogueManager : MonoBehaviour
                 //Spawn new ones
                 for (int i = 0; i < activeScene.currentChoices.Count; i++)
                 {
-                    uiManager.AddChoice(activeScene.currentChoices[i].text, i);
+                    string choiceText = activeScene.currentChoices[i].text;
+
+                    //If there are any tags in the current line
+                    if (activeScene.currentTags.Count > 0)
+                    {
+                        //Get the text from the language loader
+                        choiceText = DialogueLanguageLoaderScript.Instance.
+                            GetLine(activeScene.currentChoices[i].tags[0]);
+                    }
+
+                    //Add the choice with the index that corresponds to it
+                    uiManager.AddChoice(choiceText, i);
                 }
             }
 
