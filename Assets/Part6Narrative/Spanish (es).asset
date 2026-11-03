@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spanish (es)
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Locale
   m_Identifier:
-    m_Code: es
+    m_Code: ES
   m_Metadata:
     m_Items: []
   m_LocaleName: Spanish (es)

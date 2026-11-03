@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: English (en)
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Locale
   m_Identifier:
-    m_Code: en
+    m_Code: EN
   m_Metadata:
     m_Items: []
   m_LocaleName: English (en)

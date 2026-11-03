@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+//We add this library so we can access settings functions for localization
+using UnityEngine.Localization.Settings;
 public class DialogueLanguageLoaderScript : MonoBehaviour
 {
     //A reference to this same component
@@ -49,6 +50,10 @@ public class DialogueLanguageLoaderScript : MonoBehaviour
     public void SelectLanguage(string languageID)
     {
         Debug.Log(languageID);
+        //Find the locale with the specified ID and set it as the selected one
+        LocalizationSettings.SelectedLocale = 
+            LocalizationSettings.AvailableLocales.GetLocale(languageID);
+
         //If we can find the index in the dictionary
         if (languageIndex.TryGetValue(languageID, out int value))
         {

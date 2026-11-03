@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "name": "SoundDemo",
+    "maps": [
+        {
+            "name": "Steps",
+            "id": "08e3142c-7438-468d-a0d6-6bc5f061d3d1",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "15ed700f-c0ec-4ba2-9b28-6284eb297628",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a9402923-645e-45c7-a6c0-87afa44ba1e7",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
