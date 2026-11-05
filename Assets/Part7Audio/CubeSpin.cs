@@ -12,6 +12,6 @@ public class CubeSpin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up, speed);
+        transform.Rotate(Vector3.up, speed * Time.deltaTime, Space.World);
     }
 }
