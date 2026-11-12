@@ -23,6 +23,7 @@ public class PointAndClickNavigation : MonoBehaviour
         {
             //We tell the player to go at the point raycasted
             agent.SetDestination(hit.point);
+            //Debug.Log("Moving to " + hit.point);
         }
     }
 }
